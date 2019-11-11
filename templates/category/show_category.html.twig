@@ -1,0 +1,31 @@
+{% extends "base.html.twig" %}
+
+{% block title %}
+    {{ category.title }}
+{% endblock %}
+
+{% block body %}
+    <h1>{{ category.title }}</h1>
+
+    <div class="row">
+        {% for movie in category.movies %}
+            <div class="col-4">
+                <div class="card border-info mb-3">
+                    <div class="card-body">
+                        <img src="{{ movie.poster }}">
+                        <h4 class="card-title">{{ movie.title }}</h4>
+                        <small>Sorti le
+                            {{ movie.releaseAt | date('d/m/Y') }}
+                            et réalisé par
+                            <a href="{{ path('people', {'slug': movie.director.slug}) }}">
+                                {{ movie.director.fullName }}</a>
+                        </small>
+                        <p class="card-text">
+                            <a class="btn btn-info" href="{{ path('show_movie', {'slug': movie.slug}) }}">Voir la fiche du film</a>
+                        </p>
+                    </div>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+{% endblock %}

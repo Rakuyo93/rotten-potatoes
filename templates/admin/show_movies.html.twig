@@ -1,0 +1,43 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Admin - Liste des films
+{% endblock %}
+
+{% block body %}
+
+    <h1>Admin - Liste des films</h1>
+
+    <p>
+        <a class="btn btn-info" href="{{ path('new_movie') }}">Ajouter un film</a>
+    </p>
+
+    <table class="table table-striped table-dark">
+        <thead>
+            <tr>
+                <th scope="col">Id</th>
+                <th scope="col">Titre</th>
+                <th scope="col">Sortie</th>
+                <th scope="col">Synopsis</th>
+                <th scope="col">Editer</th>
+                <th scope="col">Supprimer</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for movie in movies %}
+                <tr class="table-active">
+                    <td>{{ movie.id }}</td>
+                    <td>{{ movie.title }}</td>
+                    <td>{{ movie.releaseAt | date('d/m/Y') }}</td>
+                    <td>{{ movie.synopsis }}</td>
+                    <td>
+                        <a class="btn btn-success" href="{{ path('edit_movie', {'id': movie.id}) }}">Editer</a>
+                    </td>
+                    <td>
+                        <a class="btn btn-danger" href="{{ path('delete_movie', {'id': movie.id}) }}">Supprimer</a>
+                    </td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+{% endblock %}

@@ -1,0 +1,151 @@
+{% extends "base.html.twig" %}
+
+{% block title %}
+    {{ movie.title }}
+{% endblock %}
+
+{% block body %}
+    <div class="alert alert-secondary">
+        <h1>{{ movie.title }}</h1>
+        <p>
+            <small>
+                Genre(s) :
+                {% for category in movie.categories %}
+                    <span class="badge badge-pill badge-info">
+                        {{ category.title }}</span>
+                {% endfor %}
+
+                {% if is_granted('ROLE_ADMIN') %}
+                    <a class="btn btn-success" href="{{ path('edit_movie', {'id': movie.id}) }}">Editer</a>
+                    <a class="btn btn-danger" href="{{ path('delete_movie', {'id': movie.id}) }}">Supprimer</a>
+                {% endif %}
+
+            </small>
+        </p>
+
+        <div class="row">
+            <div class="col-3">
+                <img src="{{ movie.poster }}" alt="Poster de {{ movie.title }}">
+            </div>
+
+            <div class="col">
+                <h4>
+                    {% if movie.averageRating > 2.5 %}
+                        {% set className = "badge-success" %}
+                    {% elseif movie.averageRating > 1.5 %}
+                        {% set className = "badge-warning" %}
+                    {% else %}
+                        {% set className = "badge-danger" %}
+                    {% endif %}
+                    <span class="badge {{className}}">
+                        Moyenne utilisateurs :
+                        {{ movie.averageRating | number_format(2, ",", " ") }}
+                        / 5
+                    </span>
+                </h4>
+
+                <h5>
+                    Date de sortie
+                    {{ movie.releaseAt | date('d/m/Y') }}
+                </h5>
+
+                <hr>
+
+                <h5>Synopsis</h5>
+
+                <p class="card-text">{{ movie.synopsis }}.</p>
+
+                <hr>
+
+                <h4 class="car-title">Réalisateur</h4>
+
+                <div class="card" style="width: 10rem;">
+                    <img class="card-img-top" src="{{ movie.director.picture }}">
+                    <div class="card-body">
+                        <p class="card-text">
+                            <a href="{{ path('people', {'slug': movie.director.slug}) }}">
+                                {{ movie.director.fullName }}</a>
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <hr>
+
+        <h4>Casting</h4>
+
+        <div class="row">
+            {% for actor in movie.actors %}
+                <div class="col-2 mb-2">
+                    <div class="card" style="width: 10rem;">
+                        <img class="card-img-top" src="{{ actor.picture }}">
+                        <div class="card-body">
+                            <p class="card-text">
+                                <a href="{{ path('people', {'slug': actor.slug}) }}">
+                                    {{ actor.fullName }}</a>
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+
+        <hr>
+
+        <div>
+            {% if is_granted('ROLE_USER') %}
+                <h4>Commenter</h4>
+                {{ form_start(ratingForm) }}
+
+                <div class="form-group">
+                    {{ form_row(ratingForm.notation) }}
+                </div>
+
+                <div class="form-group">
+                    {{ form_row(ratingForm.comment) }}
+                </div>
+
+                <button class="btn btn-info" type="submit">Commenter</button>
+
+                {{ form_end(ratingForm) }}
+
+            {% else %}
+                <p>
+                    <a href="{{ path('login') }}" class="btn btn-info">Se connecter</a>
+                    pour noter ce film ou
+                    <a href="{{ path('register') }}" class="btn btn-success">S'inscrire</a>
+                </p>
+
+            {% endif %}
+        </div>
+
+        <hr>
+
+        <div>
+            <h4>Commentaires</h4>
+
+            {% for rating in movie.ratings %}
+                <p>
+                    <strong>Ecrit par
+                        {{ rating.author.name }}
+                        le
+                        {{ rating.createdAt | date('d/m/Y H:i')}}
+                    </strong>
+                </p>
+
+                <p>{{ rating.notation }}
+                    / 5</p>
+
+                <p>
+                    <small>{{ rating.comment }}</small>
+                </p>
+
+                {% if is_granted('ROLE_ADMIN') %}
+                    <a class="btn btn-danger" href="{{ path('delete_rating', {'id': rating.id}) }}">Supprimer</a>
+                {% endif %}
+
+                <hr>
+            {% endfor %}
+        </div>
+    </div>
+{% endblock %}

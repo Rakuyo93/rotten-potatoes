@@ -1,0 +1,30 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Inscription
+{% endblock %}
+
+{% block body %}
+
+    <h1>S'inscrire à Rotten Potatoes</h1>
+
+    {{ form_start(registerForm) }}
+
+    <div class="form-group">
+        {{ form_row(registerForm.email) }}
+    </div>
+
+    <div class="form-group">
+        {{ form_row(registerForm.password) }}
+    </div>
+    <div class="form-group">
+        {{ form_row(registerForm.name) }}
+    </div>
+    <div class="form-group">
+        {{ form_row(registerForm.avatar) }}
+    </div>
+
+    <button class="btn btn-primary" type="submit">S'inscrire</button>
+
+    {{ form_end(registerForm) }}
+
+{% endblock %}

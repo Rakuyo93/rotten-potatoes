@@ -1,0 +1,60 @@
+{% extends "base.html.twig" %}
+
+{% block title %}
+    {{ search }}
+{% endblock %}
+
+{% block body %}
+    <div class="alert alert-info">
+        <h1 class="alert-title">Résultats de votre recherche
+            <em>"{{ search }}"</em>
+        </h1>
+        <hr>
+        <p>Faire une nouvelle recherche ?</p>
+
+        <form>
+            <div class="row">
+                <div class="col-10">
+                    <input type="text" name="search" class="form-control" placeholder="Rechercher" value="{{ search }}">
+                </div>
+
+                <div class="col-2">
+                    <button class="btn btn-dark">Rechercher</button>
+                </div>
+            </div>
+        </form>
+    </div>
+
+    {% for movie in results %}
+        <div class="alert alert-secondary">
+            <h2 class="alert-title">{{ movie.title }}</h2>
+            {% for category in movie.categories %}
+                <span class="badge badge-primary">{{ category.title }}</span>
+            {% endfor %}
+
+            <p>
+                Réalisé par
+                <a href="{{ path('people', {'slug': movie.director.slug}) }}">
+                    {{ movie.director.fullName }}</a>
+            </p>
+
+            <p>
+                Casting
+                {% for actor in movie.actors %}
+                    <a href="{{ path('people', {'slug': actor.slug}) }}">
+                        {% if not loop.last %}
+                            {{ actor.fullName }},
+                        {% else %}
+                            {{ actor.fullName}}.
+                        {% endif %}
+                    </a>
+                {% endfor %}
+            </p>
+
+            <p>
+                <a class="btn btn-info" href="{{ path('show_movie', {'slug': movie.slug}) }}">Voir la fiche du film</a>
+            </p>
+        </div>
+    {% endfor %}
+
+{% endblock %}

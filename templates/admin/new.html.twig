@@ -1,0 +1,46 @@
+{% extends "base.html.twig" %}
+
+{% block title %}Ajouter un film
+{% endblock %}
+
+{% block body %}
+    <h1>Ajouter un film</h1>
+
+    {{ form_start(movieForm) }}
+
+    <div class="form-group">
+        {{ form_row(movieForm.title) }}
+    </div>
+
+    <div class="form-group">
+        {{ form_row(movieForm.slug) }}
+    </div>
+
+    <div class="form-group">
+        {{ form_row(movieForm.poster) }}
+    </div>
+
+    <div class="form-group">
+        {{ form_row(movieForm.releaseAt) }}
+    </div>
+
+    <div class="form-group">
+        {{ form_row(movieForm.synopsis) }}
+    </div>
+
+    <div class="form-group">
+        {{ form_row(movieForm.categories) }}
+    </div>
+
+    <div class="form-group">
+        {{ form_row(movieForm.actors) }}
+    </div>
+
+    <div class="form-group">
+        {{ form_row(movieForm.director) }}
+    </div>
+
+    <button class="btn btn-success" type="submit">Ajouter</button>
+
+    {{ form_end(movieForm) }}
+{% endblock %}

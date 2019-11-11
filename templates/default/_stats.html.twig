@@ -1,0 +1,74 @@
+<div class="row">
+    {% for movie in movies %}
+        <div class="col-4 mb-3">
+            <div class="card">
+                <img src="{{movie.poster}}" class="img-fluid" alt="">
+                <div class="card-body">
+                    <h4 class="card-title">
+                        <a href="{{path('show_movie', {'slug': movie.slug})}}">
+                            {{movie.title}}
+                        </a>
+
+                    </h4>
+                    {% for category in movie.categories %}
+                        <a href="{{path('show_category', {'slug': category.slug})}}" class="badge badge-dark">
+                            {{ category.title }}
+                        </a>
+                    {% endfor %}
+                    <hr>
+
+                    <div class="d-flex justify-content-between align-items-center">
+                        <h4>
+                            {% if movie.averageRating > 2.5 %}
+                                {% set className = "badge-success" %}
+                            {% elseif movie.averageRating > 1.5 %}
+                                {% set className = "badge-warning" %}
+                            {% else %}
+                                {% set className = "badge-danger" %}
+                            {% endif %}
+                            <span class="badge {{className}}">
+                                Noté :
+                                {{ movie.averageRating | number_format(2, ",", " ") }}
+                                / 5
+                            </span>
+                        </h4>
+                        <h6 class="card-subtitle text-muted">Critiqué par
+                            {{movie.ratings|length}}
+                            utilisateurs</h6>
+                    </div>
+
+                    <hr>
+
+                    <p class="card-text">
+                        <strong>Réalisé par :
+                        </strong>
+                        <a href="{{ path('people', {'slug': movie.director.slug}) }}">{{movie.director.fullName}}</a>
+
+                        <br>
+                        <strong>Sorti en :
+                        </strong>
+                        {{ movie.releaseAt | date('Y') }}
+                        <br>
+                        {# <strong>Avec :
+                                                                        </strong>
+                                                                        {% for actor in movie.someActors(3) %}
+                                                                            {% if not loop.last %}
+                                                                                {{ actor.fullName }},
+                                                                            {% else %}
+                                                                                {{ actor.fullName}}
+                                                                            {% endif %}
+                                                                        {% endfor %}
+                                                
+                                                                        {% if movie.actors|length > 3 %}
+                                                                            et
+                                                                            {{movie.actors|length - 3}}
+                                                                            autres acteurs
+                                                                        {% endif %} #}
+                    </p>
+
+                    <p class="card-text">{{movie.synopsis}}</p>
+                </div>
+            </div>
+        </div>
+    {% endfor %}
+</div>
